@@ -1,0 +1,29 @@
+# vault/ holds C3 material: raw transcripts and any other third party's exact
+# words. Never committed, per the sensitive-material gate (G5) in
+# doctrine/CONSTITUTION-CORE.md. Local-only, always - this is the one
+# directory this repository's version control is not permitted to see.
+#
+# Contents-ignored, README-tracked: the directory's CONTENTS are excluded,
+# not the directory itself, so vault/README.md can stay tracked and explain
+# the quarantine to anyone who clones this repository fresh, before they
+# have dropped anything into it. Git cannot re-include a file inside a
+# directory that is itself excluded - that is why this is written as two
+# lines rather than one bare `vault/` line.
+vault/*
+!vault/README.md
+
+# Any seat you add that needs its own local-only intake directory - raw
+# financial statements, credentials, anything else that must never enter
+# version control - should follow the same two-line pattern: ignore the
+# directory's contents, negate its README. Copy this idiom rather than
+# inventing a new one each time a seat needs a quarantined drop folder.
+#
+# Example, if you add one later:
+#   org/seats/<your-seat>/intake/*
+#   !org/seats/<your-seat>/intake/README.md
+
+.DS_Store
+
+# session-local harness state, not organization state
+.claude/settings.local.json
+.claude/scheduled_tasks.lock

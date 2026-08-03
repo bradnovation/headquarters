@@ -1,0 +1,165 @@
+# file-class: GENERATED - this file ships with placeholder pins. The
+# onboarding interview fills them in from what your own plan actually grants,
+# and from that point the pins are yours to edit. Upstream may improve the
+# duty map and the doctrine comments around them; EXTENDING.md explains how a
+# doctrine improvement reaches a file you have already filled in.
+#
+# THIS FILE IS THE SINGLE SOURCE OF TRUTH for which model tier does which kind
+# of work. Every seat charter, every function charter, and every mission
+# packet that convenes more than one agent reads its tier assignment from
+# here rather than hard-coding a model name into a charter. If a charter and
+# this file ever disagree about a tier, this file wins - it is read far more
+# often than any one charter is, and a stale duty row here is a smaller
+# mistake to fix than a hard-coded model name scattered across many files.
+
+# -----------------------------------------------------------------------------
+# THE WARNING, FIRST, BECAUSE IT IS EASY TO VIOLATE BY ACCIDENT
+# -----------------------------------------------------------------------------
+# Never set a subagent-model environment override (in this harness,
+# CLAUDE_CODE_SUBAGENT_MODEL; check your own harness's equivalent if you are
+# not running this on the same tooling) anywhere - not in your shell profile,
+# not in CI, not in a launch script. Set one and every pin in this file
+# quietly stops mattering: each subagent your fan-outs bring up runs on the
+# override's model instead, the work proceeds as though nothing were wrong,
+# nothing errors, and no log line anywhere records the substitution.
+# This is true regardless of who is running this repository or what their
+# setup looks like; it is a property of how the override works, not a warning
+# specific to one person's habits. If a fan-out ever behaves as though this
+# file does not exist, check your environment before you doubt the file.
+
+# -----------------------------------------------------------------------------
+# THE THREE TIERS
+# -----------------------------------------------------------------------------
+# Three tiers, defined by the shape of the work, not by any vendor's model
+# names. Sort whatever models your own plan grants you into these three
+# buckets by capability and cost, then fill the placeholders below.
+#
+#   reasoning - reach for this tier where a wrong answer is expensive and the
+#     work comes up rarely enough that its price barely registers: chairing a
+#     meeting, turning a ruling into a mission packet, writing or revising
+#     doctrine, drafting anything that touches money or liability, settling
+#     what a build plan will hand down to a lighter tier. This product is
+#     designed around Opus as the reasoning tier's baseline - the orchestrator
+#     every doctrine file in this repository assumes is doing the driving, with
+#     nothing more capable assumed above it anywhere. If your own plan grants
+#     something more capable than that baseline, that model becomes your
+#     reasoning pin. If it does not, Opus-class capability is the floor this
+#     design was written for, and the doctrine should read correctly on it
+#     without alteration.
+#
+#   building - the tier an ordinary day runs on, and the answer whenever
+#     nobody has argued for a different one. A convened seat lives here: the
+#     approved plan it carries out, the copy it writes, the position brief it
+#     files before a meeting, most of what a mission asks of it. A new duty
+#     belongs here until a specific reason moves it - see the escalation rule
+#     below.
+#
+#   scanning - bulk work that repeats and costs next to nothing to run again:
+#     sweeping the registers for staleness, writing ledger rows, assembling
+#     index cards, asking whether something has finished yet. The penalty for
+#     getting one of these wrong is one more run.
+#
+# Fill these in at onboarding, and re-fill them whenever your own plan access
+# changes:
+
+models:
+  reasoning: [REASONING MODEL - fill at onboarding]
+  building: [BUILDING MODEL - fill at onboarding]
+  scanning: [SCANNING MODEL - fill at onboarding]
+
+# -----------------------------------------------------------------------------
+# THE COLLAPSE CASE - NAMED, NOT HIDDEN
+# -----------------------------------------------------------------------------
+# Some plans grant access to exactly one usable model. If that is your
+# situation, set all three pins above to that same model rather than leaving
+# two of them unset. This is a real, known degradation, named here so it is a
+# decision you made on purpose rather than a gap nobody flagged:
+#
+#   - You lose the cost separation between disposable scanning work and
+#     judgment-heavy reasoning work; every duty below now costs the same,
+#     whatever the single tier's price actually is.
+#   - You lose the signal that comes from a cheap tier failing fast on
+#     something too hard for it - there is no longer a "this needed a better
+#     model" moment, because there is only one model to have needed.
+#   - The escalation rule below still holds procedurally even though, in the
+#     collapse case, every tier name resolves to the same pin. Keep the duty
+#     map's tier labels as they are rather than deleting the distinction - the
+#     day your access improves, re-splitting the pins is a one-line edit
+#     instead of a rebuild.
+#
+# A single-tier setup is a supported, named configuration. A single-tier setup
+# nobody wrote down is a silent one, and that is what this section exists to
+# prevent.
+
+# -----------------------------------------------------------------------------
+# THE ORCHESTRATOR PRINCIPLE
+# -----------------------------------------------------------------------------
+# Standing policy, independent of any particular model name: no
+# interactive-only, premium, or otherwise most-expensive tier you have access
+# to ever runs unattended - never in a scheduled routine, never as a member of
+# a fanned-out fleet, never as the executor inside a mission packet. Whatever
+# seat or tier plays that role for you - the one you would reach for a hard
+# judgment call you would not trust to anything else - it convenes at your own
+# keyboard, in a session you are present for, and nowhere else. EXTENDING.md
+# and the seat template both assume this: a new seat may add domain rules, but
+# it may never wire your most expensive interactive tier into an unattended
+# role, because that is a rail this file states, not a preference a charter
+# can override.
+#
+# The reasoning tier's pin above is not this exception seat. It is the tier
+# every doctrine file assumes runs unattended when a mission calls for
+# judgment-heavy work at fleet scale. If you are fortunate enough to have
+# both - an unattended-safe reasoning tier and a separate, more expensive,
+# interactive-only tier you reserve for yourself - keep them distinct in your
+# own head even though this file only tracks the three unattended-safe tiers
+# above. The unattended tiers are what this file pins. The interactive-only
+# exception, if you have one, is never pinned here, precisely because it must
+# never appear in a duty row below.
+
+# -----------------------------------------------------------------------------
+# DUTY -> TIER MAP
+# -----------------------------------------------------------------------------
+# The map a charter or a mission packet consults before it convenes more than
+# one agent. THE ESCALATION RULE: building is the default tier for every duty
+# below; reasoning is used only where the duty is judgment-heavy by its
+# nature - chairing, planning, legal-shaped drafting - with the reason stated
+# in the comment beside it, never reached for out of habit and never reached
+# for just because a building-tier attempt felt slow. A duty that starts on
+# building and keeps failing its own verification bar is a finding for the
+# owning seat's charter to address, not a standing excuse to move the duty to
+# reasoning by default.
+#
+# Duty names below match the seats and functions in org/ORG_CHART.md. Adding
+# your own seat means adding its own duty row here, per EXTENDING.md's
+# four-act registration.
+
+duties:
+  chief-of-staff-chair:        reasoning  # turning a ruling into a mission packet, and owning handoff/session-log discipline, is judgment work by its nature
+  operations-sweeps:           scanning   # freshness passes across the registers - cheap, frequent, fully disposable
+  operations-meeting-brief:    reasoning  # a convened seat's own position brief at a meeting is judgment, the same as the chair's
+  marketing-content:           building   # strategy, briefs, drafted copy, content production
+  revenue-drafting:            building   # compliance-gated outbound drafts and candidate-row research
+  engineering-plans:           reasoning  # a build plan a lighter tier will execute unattended is the single artifact where a mistake is most expensive
+  engineering-builds:          building   # executing an already-approved plan
+  finance-ledgers:             building   # ledger entries and the projection-before-launch habit
+  general-counsel-drafting:    reasoning  # deciding what a clause says or what it exposes you to is the judgment call; mechanical fill-in after that call is settled runs at building tier inside the same convening, never on its own
+  standards-guard-judge:       building   # the one bounded judgment call per deliverable; the deterministic checks beside it are not model-tiered at all
+  innovation-desk-scoring:     scanning   # scoring a ranked inbox when the desk convenes
+  research-and-indexing:       scanning   # cards built out of banked material, checking what is still current, wide sweeps of the open web
+
+# Agent Quality has no row above, on purpose: its own charter states plainly
+# that it is not convened as its own run. Its after-action note rides
+# whatever tier the sealed mission it is noting already ran at. A function
+# with no standing convening moment of its own does not need a pin.
+
+# -----------------------------------------------------------------------------
+# RE-PINNING, WHEN A MODEL CHANGES OR YOUR ACCESS DOES
+# -----------------------------------------------------------------------------
+# 1. Edit the pin above.
+# 2. Run one fixture mission end to end on the new pin before trusting it for
+#    real work.
+# 3. Diff its output against a prior run on the old pin, looking specifically
+#    for drift in judgment-tier output - a building-tier drift is usually
+#    obvious; a reasoning-tier drift is the one worth checking by hand.
+# 4. Commit the change, in this repository only, with whatever authorship
+#    record your own session discipline uses.

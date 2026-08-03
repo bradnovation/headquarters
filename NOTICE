@@ -1,0 +1,18 @@
+<!-- file-class: GENERATED -->
+headquarters
+Copyright 2026 Bradnovation
+
+headquarters is an independent, open-source project. It is not affiliated
+with, endorsed by, or sponsored by Anthropic. Any product or trademark
+named in this repository, including "Claude" and "Claude Code," belongs to
+its respective owner and is referenced here only to describe compatibility,
+never to claim sponsorship.
+
+Several of this product's mechanisms were adapted, as ideas rather than as
+code, from other open-source projects. The full list, and what was taken
+from each, is kept in ATTRIBUTIONS.md at the root of this repository.
+
+This NOTICE file is part of the attribution content required by the Apache
+License, Version 2.0 under which this work is distributed (see LICENSE).
+Any redistribution of this work, or of a derivative of it, must retain a
+readable copy of this NOTICE per that License's Section 4(d).

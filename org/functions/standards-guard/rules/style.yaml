@@ -1,0 +1,24 @@
+# org/functions/standards-guard/rules/style.yaml
+#
+# Voice and style rules, split between deterministic pattern checks (the
+# fast-path, no model call) and the handful that genuinely need the one
+# bounded judgment call per deliverable. Ships empty on purpose
+# (org/functions/standards-guard/CHARTER.md, "Onboarding: point this at your
+# own standards"). Mirror your own canon of truth into this file; an empty
+# file is the honest state until you do.
+#
+# deterministic_rules: a literal pattern match, checked with no judgment.
+# judged_rules: a description evaluated by the single judgment call, since a
+#   plain pattern cannot decide it (voice, tone, a violation that isn't a
+#   literal string match).
+#
+# One example entry per list, commented out below (not live data):
+
+deterministic_rules: []
+  # - rule_id: ""
+  #   pattern: ""
+  #   severity: soft
+judged_rules: []
+  # - rule_id: ""
+  #   description: ""
+  #   severity: soft

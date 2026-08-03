@@ -1,0 +1,23 @@
+# org/functions/standards-guard/rules/vocabulary.yaml
+#
+# Reserved terms and banned inversions. Ships empty on purpose
+# (org/functions/standards-guard/CHARTER.md, "Onboarding: point this at your
+# own standards"): standards-guard has nothing to check here until you mirror
+# your own canon of truth into this file. Do not seed it with invented
+# entries; an empty file is the honest state until you fill it in.
+#
+# reserved_terms: vocabulary this product treats as fixed, plus the source
+#   its meaning traces back to.
+# banned_inversions: a phrase you never want inverted or misused, and the
+#   corrected form to use instead.
+#
+# One example entry per list, commented out below (not live data):
+
+reserved_terms: []
+  # - term: ""
+  #   definition: ""
+  #   source: ""        # where this term's meaning comes from
+banned_inversions: []
+  # - phrase: ""
+  #   canonical_correction: ""
+  #   source: ""

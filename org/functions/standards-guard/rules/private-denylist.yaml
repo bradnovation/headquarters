@@ -1,0 +1,21 @@
+# org/functions/standards-guard/rules/private-denylist.yaml
+#
+# Your own sensitive names: people, clients, financial counterparties,
+# internal project names, anything that must never appear in anything meant
+# to leave your hands. This file is yours alone
+# (org/functions/standards-guard/CHARTER.md, "Owns"): never shipped with
+# content in it, never referenced by anything outside your own instance, and
+# the one rule file that does not travel if you ever fork or share your
+# setup with someone else.
+#
+# Populate this before your first public push of anything. Not optional, not
+# deferrable, per the charter's Onboarding step 3.
+#
+# denied_terms: a name and the category it falls into. This check is always
+#   a deterministic match, never a judgment call.
+#
+# One example entry, commented out below (not live data):
+
+denied_terms: []
+  # - term: ""
+  #   category: person | client | financial | internal-project | other

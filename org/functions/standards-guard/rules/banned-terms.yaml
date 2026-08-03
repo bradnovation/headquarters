@@ -1,0 +1,21 @@
+# org/functions/standards-guard/rules/banned-terms.yaml
+#
+# Retired terms (hard: never ships) and clichés (soft: flagged, not
+# necessarily blocked). Ships empty on purpose
+# (org/functions/standards-guard/CHARTER.md, "Onboarding: point this at your
+# own standards"). Mirror your own canon of truth into this file rather than
+# guessing at entries; an empty file is the honest state until you do.
+#
+# retired_terms: language you have decided to stop using entirely.
+# banned_cliches: phrasing you want flagged for review, not hard-blocked.
+#
+# One example entry per list, commented out below (not live data):
+
+retired_terms: []
+  # - term: ""
+  #   reason: ""
+  #   severity: hard
+banned_cliches: []
+  # - phrase: ""
+  #   reason: ""
+  #   severity: soft
