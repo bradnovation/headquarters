@@ -56,6 +56,15 @@ a standing tick.
     result yet (R-313 item c: workflow run ids go into STATE at launch, by pointer,
     never re-narrated) and resume those the same way.
 
+(b2) **Mesh sweep, orchestrator seat only:** `ListAgents` (a listing, not a
+    message) to see which seats are live; then read, read-only on disk, the mission
+    STATE of every seat that holds an HQ mission (the roster is in the multi-session skill) for
+    run ids marked in flight or cut. Resume is same-session only, so the orchestrator can never
+    resume a peer's run; what it can do is NOTICE: a seat with in-flight work and no
+    live session is reported to the operator in this turn's one line ("factory seat
+    gone with run X cut; reopen it"). A seat that is live handles itself (its own
+    guard). Nothing is sent to any seat from this step.
+
 (c) Commit what landed, if the repo's own rules allow a commit here.
 
 (d) If anything was resumed, or is still running: **re-arm** — run

@@ -200,4 +200,15 @@ entry shape by hand every time - the point of a shared shape is that a reader
 who has seen it once can find what they need in any seat's entry without
 re-learning its layout.
 
+## The done signal
+
+A seat holding a mission from the orchestrator sends it ONE line when the mission
+lands, when the seat parks or closes with the mission still open, or after its own
+guard resumed a cut run: `<seat> | <mission> | landed / parked / cut-resumed | <STATE path> | <commit>`.
+That message is the "park" fixed point of the wake cadence, so it adds no wake beyond
+it; under 2KB, pointer-only. The orchestrator does not poll and does not wake a seat
+to ask; between signals its guard reads the seats' STATE files on disk. A cut seat
+with no guard armed sends nothing until its next open, which is why each seat's park
+ritual points here.
+
 Source: ops/MULTI-SESSION.md §1-6, §10-13, §16-19 (moved into this skill 2026-09-16)
