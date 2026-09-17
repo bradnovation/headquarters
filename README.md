@@ -38,6 +38,36 @@ set of gates that never move, and a repository that is the record.
   running it will earn you, save you, or automate away. It is a way of working, and
   the results are yours.
 
+### What changed in 0.2
+
+- **The building tier is now the default for every fan-out role**, with a boost line
+  that names any proposed reasoning-tier escalation and a notify rule that surfaces
+  the case for one mid-work instead of pinning up silently.
+- **Two new doctrine files**: `ops/MULTI-SESSION.md`, for peer sessions working in
+  parallel, and `ops/MEASUREMENT_CRAFT.md`, for instrument validity and verification
+  discipline.
+- **The budget guard gained a second brake**: a cap on how many agents may be
+  convened at once, independent of the token guard.
+- **Two new scripts**: a usage-meter tally read from your own transcripts, and a
+  doctrine-diff helper for taking an upstream release.
+- **An install-from-GitHub section**, right below, that a friend can follow cold.
+- **This doctrine still runs fully with the reasoning tier at the keyboard.** A more
+  capable interactive-only tier stays a luxury for particular days, never a pinned
+  duty.
+
+Full detail in `CHANGELOG.md`.
+
+### What changed in 0.3
+
+- **Doctrine is now invoke-loaded from `plugins/headquarters-core`** as skills,
+  instead of being read whole out of `doctrine/CONSTITUTION-CORE.md` every
+  session. It loads either in-repo (the `.claude/skills/headquarters-core`
+  symlink this template ships with, auto-loaded once you trust the folder) or
+  machine-wide, symlinked into your own `~/.claude/skills/` so it follows you
+  across every project - see `plugins/README.md` for both routes. The
+  `local-lane` plugin alongside it stays entirely optional: nothing here
+  requires it, and you only see it if you enable it yourself.
+
 ---
 
 ## What you get
@@ -184,30 +214,64 @@ and the first ledger entry.
 
 ---
 
-## Your first fifteen minutes
+## Install from GitHub
 
-You need Claude Code and somewhere to keep a git repository. There is nothing to
-install, no service to sign up for, and no dependency to resolve.
+Official quickstart, read 2026-09-12, is the authority behind the commands below:
+<https://code.claude.com/docs/en/quickstart>. Check it yourself if anything here
+looks out of date by the time you read it.
 
-1. **Clone it.** The tree you get is deliberately empty of anyone's history. Every
-   file marked GENERATED ships as a filled-in shape with the facts left blank.
-2. **Run the init interview.** It checks that the sensitive-material quarantine
-   exists before it asks a single real question about your business, because
-   version-control history is permanent and a first business answer given into an
-   unprotected repository has no clean undo. Then it interviews you one topic at a
-   time: who you are and how the staff should address you, what you are running, your
-   values in your own words, your dream cap, and whether this working copy is public
-   or private. It fills no blank by inference, and it drafts every file it proposes to
-   write and shows it to you before writing a line.
-3. **Open your first session.** The orientation ritual reads the entry file, the
+1. **Install Claude Code.** Native installer, on macOS, Linux, or WSL:
+   ```
+   curl -fsSL https://claude.ai/install.sh | bash
+   ```
+   Windows PowerShell:
+   ```
+   irm https://claude.ai/install.ps1 | iex
+   ```
+   Homebrew: `brew install --cask claude-code`. WinGet: `winget install Anthropic.ClaudeCode`.
+   Confirm it with `claude --version`. The first `claude`
+   command prompts you to log in: a Claude Pro, Max, Team, or Enterprise
+   subscription, or a Console account, all work.
+2. **Get your own copy of this repository.** Three paths, in the order worth
+   trying:
+   - **The template button.** On the repository's GitHub page, click **Use this
+     template**, name your copy, and leave it **private** (why, below). Then:
+     ```
+     git clone https://github.com/YOUR-NAME/headquarters.git
+     ```
+   - **The GitHub CLI, one line:**
+     ```
+     gh repo create YOUR-NAME/headquarters --template bradnovation/headquarters --private --clone
+     ```
+   - **A plain clone with detached history**, if you would rather not use either
+     GitHub feature:
+     ```
+     git clone https://github.com/bradnovation/headquarters.git my-headquarters
+     cd my-headquarters
+     rm -rf .git
+     git init
+     git add -A
+     git commit -m "headquarters v0.2, my copy"
+     ```
+     Then create a private repository on GitHub and push that commit to it.
+
+   **Why private.** The fork-posture line in `CLAUDE.md` section (f) decides which
+   defaults are safe: a private copy may hold internal business material in
+   ordinary committed files, a public one may not. Start private, and change that
+   answer deliberately later if you actually mean to run this in the open.
+3. **Open a session inside it.** `cd` into the directory you cloned, then run
+   `claude`. On a fresh clone the staff offers you the onboarding interview itself;
+   if it does not, asking in plain words, "run the onboarding interview," always
+   works. There is no slash command to remember.
+4. **Your first orientation.** The orientation ritual reads the entry file, the
    constitution core, the top of `HANDOFF.md`, and your newest rulings, then reports
    where things stand and stops for your direction. Orienting is reading, not doing;
    nothing is written during it.
-4. **Convene your first meeting.** Pick a genuine open question in your business,
+5. **Convene your first meeting.** Pick a genuine open question in your business,
    small enough to finish. The staff argues it through in briefs, the disagreements
    get carried rather than smoothed, and you rule. The ruling lands in `DECISIONS.md`
    and the work becomes a mission packet.
-5. **Park.** Touch anything in the repository and the close ritual is owed before you
+6. **Park.** Touch anything in the repository and the close ritual is owed before you
    stop: the handoff is rewritten, the session log gets its entry, and the commit
    carries both.
 

@@ -30,6 +30,18 @@ operator, reading only this repo, can answer all six of these.**
 If any of the six cannot be answered from the files, the session has not finished its
 work, no matter how much of the actual task got done.
 
+Whenever the operator has to go open, paste, or upload something themselves, hand it
+to them as a complete path, from the root, sitting alone on its own line - not a bare
+filename and not a reference relative to wherever the session happens to be. Anything
+short of that turns into a search on their end, which erases the reason for pointing
+them at the file at all.
+
+Time discipline - never guessing a timestamp, and always rendering a time back to a
+person in their own local timezone - is covered in full in
+`ops/MEASUREMENT_CRAFT.md`; this file's only addition is that a checkpoint commit
+(section 3) and the park ritual (section 5) are exactly the moments that discipline
+has to hold.
+
 ---
 
 ## 2. Durability is continuous, not something you do at the end
@@ -62,6 +74,17 @@ Two corollaries worth stating plainly:
   holding is whatever it managed to put on disk before that moment. Everything else it
   knew is simply gone. This is why a later session can pick the thread up at all, and
   why nothing here is permitted to hold state that the files do not hold too.
+- **A fact discovered mid-task that would change a higher-level decision gets
+  promoted into the top-level status record the same session it is found.** Never
+  leave it buried in a sub-task's own notes for a later reader to rediscover by
+  chance.
+- **An ask sent through someone's personal channel rather than a shared inbox still
+  needs a register or ledger line watching for its reply**, the same as any other
+  tracked send. Otherwise silence goes stale unnoticed instead of getting caught.
+- **As a session's own context fills up mid-task, checkpoint proactively because of
+  that pressure specifically**, not only at the material change points a task's own
+  milestones define. Treat compaction, when it happens, as a signal to re-read live
+  state files rather than trust compacted memory of what was in progress.
 
 ---
 
@@ -91,6 +114,12 @@ your own.
 by the constitution and by `.gitignore`, and a public repository's history is
 permanent. Check before any commit that adds files you did not personally place. This
 is the one gate where "I'll clean it up later" does not exist as an option.
+
+**Check a named brand, domain, or product name against a canonical source before it is
+written into any register, report, or public-facing text.** A wrong name that reaches
+a log or a draft can propagate and needs a hard correction later. When a factual error
+is found in a standing record, correct it in place with an open, dated note explaining
+what was wrong and its practical consequence - never a silent rewrite of history.
 
 ---
 
@@ -190,6 +219,11 @@ rail that answers it.
 - **The single-session org.** Everything works beautifully as long as one particular
   conversation continues, and collapses the moment it does not. *Rail: this entire
   file, and the bar in section 1.*
+- **A tool that rewrites its own leash.** A third-party tool or plugin quietly
+  rewrites your constitution or config files, or injects unrequested instructions into
+  prompts, without being asked. *Rail: treat this as a trust violation serious enough
+  to warrant full removal, not just disabling, and flag any future tool that touches
+  core doctrine files before it is allowed to stay installed.*
 
 None of these are hypothetical failure modes invented for a document. They are what
 goes wrong, repeatedly, in any system where a capable session is trusted to remember

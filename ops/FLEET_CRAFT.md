@@ -43,22 +43,82 @@ whose pieces all need to read each other, or work whose review cost is larger th
 the time the parallelism saves. Convening more agents than the job needs is its own
 failure mode, exactly the way convening more seats than an intent needs is.
 
+**A good composition beats a good prompt.** For open-ended synthesis work, convene
+distinct roles rather than one generic pass repeated: a context-gatherer, several
+independent drafters each working a different angle, one or more judges checking
+different concerns, and one assembler. This shape consistently outperforms a single
+linear pipeline running the same total number of agents.
+
 ---
 
 ## 2. The three numbers, stated before any launch
 
-No fleet launches until three figures have been said out loud, at the launch moment,
+No fleet launches until four figures have been said out loud, at the launch moment,
 in a form you can refuse.
+
+**The building tier is the default that figure one is built on.** Builders,
+drafters, researchers, verifiers, and judges all run at the building tier unless a
+role is explicitly boosted. The reasoning tier costs roughly five times as much per
+token, so a fleet whose roles get pinned up piece by piece can burn a week's meter
+in two days with no more work actually done.
 
 1. **Projected tokens.** Derived, not asserted: agents multiplied by expected passes
    multiplied by expected output size per agent, plus the orchestrator's own
    overhead, plus the review lanes. Show the arithmetic. A bare number reads to you
-   as an estimate when it is frequently a wish.
+   as an estimate when it is frequently a wish. For build work with a visual or
+   exploratory shape, add roughly half again to the bottom-up estimate, and reserve
+   part of the projection for a final walkthrough pass after the last unit lands.
 2. **Projected wall-clock.** How long the run will occupy the session, end to end,
    including the gate and closure work.
 3. **Your meter position, read fresh.** Whatever your plan and harness expose as
    remaining usage, read at the launch moment. A remembered reading from earlier in
    the session is not a reading.
+4. **The boost line.** Say out loud, before launch, whether this run wants anything
+   above the default tier. "No roles above building" is a complete answer by
+   itself; wanting more means naming which role, why building would not hold up
+   there, and what the jump costs relative to staying put. Silence is not a yes -
+   you have to actually say the word, every time, and a blanket yes for a
+   recurring category of work only counts once it is written down as a ruling
+   rather than remembered as "we always do it that way."
+
+**The notify rule.** A session can reach the middle of a run and start to suspect
+the tier underneath it is the wrong one for what just showed up - two failed
+attempts at the bar from a building-tier unit, or a turn toward something in
+counsel, architecture, money, privacy, or a review where getting it wrong is
+costly. That suspicion goes to you, with the reasoning and the price gap laid out,
+rather than getting resolved quietly in either direction by whichever agent had the
+thought. Nobody is present to ask in an unattended run, so the concern gets logged
+and the work stays put at building until a person looks at it.
+
+**Effort is set per stage, not uniformly across a plan.** Keep effort lower for
+routine extraction and drafting; reserve higher effort for synthesis, adversarial
+review, judging, and final verification, where the real judgment work concentrates.
+
+**Any multi-agent launch is a fleet.** A run counts as a full fleet under this
+doctrine the moment it convenes more than one agent, even when it is framed
+informally as "just a quick investigation." It gets the same projection and the
+same guard.
+
+**One probe before a fan-out hits one target.** Before sending several lanes at the
+same external site or service, run a single cheap access probe first. Share what it
+finds, the working approach or the block, with every lane. Otherwise each lane
+burns its own effort rediscovering the same wall.
+
+**Review bandwidth is usually the real bottleneck.** In a pipeline that includes
+automated review, the limit is normally how much a checker can get through, not how
+fast lanes can generate. Tune a build for review capacity first.
+
+**Adversarial review is often the largest line in the budget.** Independent
+verification passes, refutation rounds, and re-verification after fixes routinely
+cost as much as the original work, sometimes more. Project for that honestly rather
+than treating it as a rounding error.
+
+**Watch for tier drift, not just totals.** A sudden spend spike is often driven by
+which tier delegated work happens to run on, not by any real change in the work
+itself. When you see a spike, check whether the shape of the work changed or only
+the per-unit price did. Treat an expensive tier that has quietly become the default
+for a whole class of work as policy drift worth correcting, even when each
+individual escalation had a reason at the time.
 
 Then four rules bind what happens next.
 
@@ -95,37 +155,52 @@ while the run is happening and nobody is watching the meter.
 script without one is not ready to launch.**
 
 - **At 80% of the run's projection: warn.** The script logs one line naming what has
-  been spent, what was projected, what the cap is, how many agents have launched, and
-  how many remain. The run continues. The line exists so that the overage, if one is
-  coming, is visible while there are still choices.
-- **At 100% of the run's cap: stop launching.** No further agents are convened.
+  been spent, what was projected, the agent-count cap, how many agents have
+  launched, and how many remain. The run continues. The line exists so that the
+  overage, if one is coming, is visible while there are still choices.
+- **At the agent-count cap: stop launching.** No further agents are convened.
   In-flight agents are allowed to finish and write their files. The script writes its
   close-out record, files what exists, names the gap, and exits.
+
+**Why the second threshold counts agents, not spend.** A harness's own running
+"spent" figure typically counts generated output tokens only, and can silently miss
+the cache-write and input cost that dominates the real bill. A guard set purely
+against that figure can look fine while the real spend has already passed the cap.
+Make the second threshold a hard cap on the number of agents this run may convene
+instead: a count is exact where a live cost figure is not.
+
+**Keep the counter run-local.** If the counter has to read from a pool shared with
+other concurrent runs, subtract that pool's already-spent carry-in at launch, so a
+run never inherits another run's convened agents as its own. Before launching, check
+that the environment is not already carrying another run: one fan-out at a time is
+far easier to hold inside a budget than several running in parallel, even when each
+one looks reasonable alone.
 
 **Never retry into a wall.** When a run stops on a spend limit, the correct behaviour
 is to stop, commit, and report. Retrying a run against a ceiling it has already hit
 burns whatever is left of the budget on failures and buys nothing.
 
 Keep the two numbers distinct in your head and in the script. **The projection is your
-estimate; the cap is the ceiling you agreed the run may not cross.** They are usually
-different, and the guard needs both: the first threshold is early warning against
-your own estimate, the second is a hard floor under your money.
+estimate; the agent-count cap is the ceiling you agreed the run may not cross.** They
+are usually different, and the guard needs both: the first threshold is early warning
+against your own estimate, the second is a hard floor under your money.
 
 A harness-neutral shape:
 
 ```
-spent      = running total this run has consumed
-projection = the figure stated at launch
-cap        = the ceiling this run may not cross
-warned     = false
+spent        = running total this run has consumed (output tokens; a lower bound)
+projection   = the figure stated at launch
+agents_cap   = the maximum agents this run may convene, net of any shared-pool carry-in
+agents_count = agents convened so far this run, tracked run-local
+warned       = false
 
 before launching each batch of agents:
-    if spent >= cap:
+    if agents_count >= agents_cap:
         stop launching
         let in-flight agents finish and write their files
         write the close-out record, name the gap, exit GUARD-TRIPPED
     if spent >= 0.8 * projection and not warned:
-        log: spent, projection, cap, launched so far, remaining
+        log: spent, projection, agents_cap, agents_count, remaining
         warned = true
 ```
 
@@ -180,10 +255,14 @@ unfinished rather than as a stylistic variant.
    the target set is usually fine already, this one instruction decides most of the
    bill.
 
-5. **Pin the tier on every call.** Each agent's tier comes from `org/models.yml`,
-   named explicitly at the call site, never inherited by accident. The interactive
-   seat you sit with never appears in a fan-out at all: that rail is stated in
-   `org/models.yml` and no script may quietly override it.
+5. **Pin the tier, and the effort, on every call.** Each agent's tier comes from
+   `org/models.yml`, named explicitly at the call site, never inherited by accident.
+   An unpinned call inherits whatever model sits at the keyboard, which may be the
+   one interactive-only tier that must never run unattended. Set an explicit effort
+   level per stage too: lower for extraction and drafting, higher for synthesis,
+   adversarial review, judging, and final verification. The interactive seat you sit
+   with never appears in a fan-out at all: that rail is stated in `org/models.yml`
+   and no script may quietly override it.
 
 6. **Prefer a pipeline to a barrier.** Stage work so that each piece proceeds as soon
    as its own input exists, rather than gathering everything at a checkpoint. A
@@ -200,6 +279,57 @@ unfinished rather than as a stylistic variant.
    during the run, not at the end of it, per `ops/OPERABILITY.md`. Insurance this
    cheap is worth buying every time, and it is what turns an interrupted run into an
    inconvenience rather than a loss.
+
+9. **Close the source before drafting from it.** A writer producing distilled prose
+   from source material reads the source for concepts, then closes it before it
+   starts drafting. Drafting with the source still open tends to bleed through as
+   near-verbatim text that survives a casual check. Treat any passage that must stay
+   verbatim as a deliberate, named exception, never paraphrased; fixing a passage
+   flagged as too close to its source needs a structural rewrite, not a synonym swap.
+
+10. **Point a derived writer at a staged file, not at moving state.** When one run
+    authors both a derived artifact and its own source material at the same time,
+    give the derived writer a sibling file to open: the source's finished, staged
+    copy, not the live document a parallel writer might still be editing underneath
+    it.
+
+11. **Embed house style in the prompt, not in a reference file.** State house style
+    or format rules directly inside every writer's own prompt; a writer often will
+    not go read a separate style file on its own. Any style sweep applies to
+    outbound, public-facing copy only. Internal working files are exempt entirely.
+
+12. **Capture verbatim material at the moment of fetch.** Any worker pulling quoted
+    or verbatim material copies it exactly into a durable record before it does any
+    summarizing. Downstream work reads only from that verified capture, never from a
+    paraphrase dressed up as a quote.
+
+13. **Give parallel builds their own namespace, and kill the stale one.** Give every
+    worktree, sandbox clone, or parallel build a unique namespace before the first
+    command touches it, and have each worker's first action confirm it is scoped to
+    its own instance. Scope any teardown sweep to an explicit allowlist of what this
+    run actually created, never to "everything of this class," which can remove a
+    shared resource another concurrent run depends on; name shared infrastructure
+    explicitly as off-limits to every worker. When more than one instance of a build
+    ends up running, identify and kill the stale one, so review targets exactly one
+    canonical build.
+
+14. **Every example value is synthetic.** Every example or placeholder value inside
+    a prompt or script is synthetic, never a real value drawn from the material
+    being processed. Grep your own generated scripts and deliverables for leaked
+    real values before committing either one.
+
+15. **A scout confirms it is reading current state.** A scout, audit, or research
+    agent reading a repository or resource it does not own confirms it is reading
+    current state, not a stale local checkout, before it reports a finding. A scout
+    many commits behind can surface a finding that is false or already fixed, which
+    wastes a correction cycle.
+
+16. **Dictate concrete lines, and cap the correction rounds.** Hand execution agents
+    dictated, concrete lines to implement rather than free-form prose requirements. A
+    vague spec invites the executor to invent structure nobody intended, which then
+    has to be corrected by hand. Name the invariants that must not change explicitly,
+    and cap the number of correction rounds before escalating to a higher tier rather
+    than iterating indefinitely at the lower one.
 
 ---
 
@@ -234,6 +364,11 @@ a report of anything altered outside the named target. Writing that report is th
 cheap part; a caveat that quietly disappeared gets found later by whoever it was
 protecting.
 
+**A style-only finding never fails a substantive review verdict on its own.** House
+style is enforced by a cheap, one-line script run over outbound copy, never by an
+agent's rewrite pass. Keep the sweep and the substantive review separate: a style
+catch gets fixed and noted, not treated as grounds to reject the whole package.
+
 ---
 
 ## 6. Landing the work: a session's output arrives as a change request
@@ -261,6 +396,11 @@ The property worth naming: this separates durability from authority. Work is sav
 continuously, so nothing is lost to an interruption, and yet nothing has become the
 official record until you said so. Those two goals fight each other in a trunk-only
 setup and stop fighting here.
+
+**Batch what ships together.** When several small, individually approved changes
+are meant to land together, test them once against the exact combined result, and
+write one release line and one rollback line for the batch. Piecemeal partial
+releases multiply risk and blur the rollback story.
 
 **If you work trunk-only**, which is a reasonable choice for a solo operator on a
 small repository, the same discipline still binds through show-before-save: the
@@ -330,6 +470,7 @@ Quick reference. Each entry is a class, not an anecdote.
 | The usage window closed mid-fleet | Whatever reached the disk is intact; everything in flight is gone | Commit the tail, partials included. Write the handoff entry with the exact resume instruction. Wait out the reset, then run the section 7 inventory before choosing how to resume |
 | The budget guard tripped | The run ended where it promised to | Report it as a success that ended early: what landed, what the gap is, what closing it would cost |
 | Two sessions found the same mission | Both believe they own it; both are about to write | The session holding the live run keeps it. The other stands down loudly, in writing, rather than working quietly around it |
+| A file another process is still actively writing needs restoring | A generic revert can silently discard that other process's own in-progress work along with what you meant to undo | Restore from an explicit snapshot you made yourself, never from a generic revert command |
 
 ---
 
@@ -353,6 +494,24 @@ Four things happen before the session that ran a fleet can park.
    nobody wrote because the run ultimately succeeded is the most expensive kind of
    omission here, because the same friction is now guaranteed to arrive again at full
    price.
+5. **Report a lane's status only from its landed return.** Never narrate an
+   expected shape or a likely outcome before the actual result is in hand, even when
+   a guess later turns out right. Label anything not yet received as unmeasured.
+6. **Hand off commits the moment your own shell degrades.** The moment a session
+   detects its own tool or shell layer failing, it writes a clear handoff record
+   immediately: the exact commands, their order, and who is meant to run them.
+   Durable-state discipline extends to the commit act itself, not only to file
+   writes.
+7. **Track tier savings as an auditable deliverable.** Report actual spend by tier
+   alongside a stated counterfactual: what an all-reasoning-tier run would have
+   cost, with its assumptions named. A savings claim should be checkable, not
+   asserted.
+8. **Compare like units when you compare runs.** A harness's reported usage figure
+   for a run is often dominated by cache-write input, not generated output.
+   Compare the same unit of measurement across runs and periods, and keep an
+   independent tally from the transcript records themselves rather than trusting one
+   dashboard's own weighting. See `ops/MEASUREMENT_CRAFT.md` for the fuller
+   instrument-discipline doctrine this belongs to.
 
 ---
 
@@ -360,7 +519,10 @@ Four things happen before the session that ran a fleet can park.
 
 *Append-only. Any session that hits fleet or process friction appends a row at close:
 what happened, why it happened, what type of lesson it is, and what changed as a
-result. The Chief of Staff surfaces open rows at the next Staff Meeting. **A row
+result. When friction with the process or tooling itself comes up mid-task, log it
+here for later review rather than stopping to fix it in the moment: protect the
+task's own momentum and give the friction a real review later instead of losing it.
+The Chief of Staff surfaces open rows at the next Staff Meeting. **A row
 closes only by amending a rule in this file, or by a recorded ruling that no change is
 warranted.** That is the whole improvement loop: friction gets written down, gets
 typed, and either changes a rule or gets explicitly declined. Nothing else bends this
@@ -421,6 +583,10 @@ it will be about your work rather than about fleets in general.*
   the next one.
 - `ops/COLD_RESUME.md` - how a session with no memory works out where an interrupted
   fleet stopped.
+- `ops/MULTI-SESSION.md` - how this session coordinates with any peer session running
+  on the same machine at the same time.
+- `ops/MEASUREMENT_CRAFT.md` - instrument discipline for any number a fleet or a
+  session reports or acts on, including usage and cost tallies.
 - `org/STAFF_MEETING.md` - the ritual that produces the brief a fleet executes, and
   the adversarial pass that sharpens it while it is still one document.
 - `org/functions/agent-quality/CHARTER.md` - the after-action note, and the lesson

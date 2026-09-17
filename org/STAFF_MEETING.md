@@ -34,6 +34,15 @@ room in the system where a decision is genuinely contestable, and it is also whe
 your rulings come from: apart from the status moves a mission logs against itself,
 nothing else in this system produces one.
 
+**An approval gate reopens when the thing approved changes materially.** Scope that
+grows past the original agreement is split into two pieces: the dated committed
+deliverable, unchanged, and the undated investment the growth actually represents. An
+approver who adds scope says so to the builder at the moment of adding it, never
+leaving it to be discovered buried in a downstream spec. New scope found mid-work is
+sized as its own unit and reported, never folded in silently, and a request implying a
+fundamentally different technical shape is named as its own future line of work rather
+than shoehorned into the current build.
+
 **A meeting cannot waive a gate.** The consequence gates in the constitution
 (`CLAUDE.md`) bind every meeting, every plan, and every ruling below your own word.
 In particular: no plan this ritual produces contains a send step or a deploy step,
@@ -184,6 +193,10 @@ are most expensive. It contains:
 A plan that hides a question is worse than a plan that asks too many. The table is
 where the plan admits what it does not know.
 
+When a deadline slips and some scoped items do not make it, the sequencing says so
+plainly: slipped is not cancelled. Everything that missed the cut is tracked as
+still-owed work in the sequencing, never allowed to read as quietly dropped scope.
+
 ### 3.5 `04-ruling.md` - your word, and the only file a human writes
 
 You rule here. Everything else in this repository can be produced by an agent; this
@@ -288,6 +301,12 @@ justify each domain seat. Write the three on a line of their own, so that a meet
 with two domain seats and five briefs total reads as the ordinary shape rather than
 as a chair who over-convened.
 
+**Some decisions need technical or system facts one seat holds combined with external
+or market facts another seat holds.** Route these to whichever convened group is
+actually empowered to hold both, rather than letting either side decide from half the
+picture - that is itself a reason to convene, not a reason to split the question
+across two smaller ones.
+
 **Seat names are defaults, not law.** Rename any seat to match how you actually think
 about your organization. The ritual keys on the *duty* - who gates, who owns spend,
 who owns the registers - never on the label. Renaming is a documented edit to
@@ -332,6 +351,12 @@ the wrong thing. The honest argument for it is not that seats write sloppy brief
 It is that every other participant in this ritual gets read by somebody, and the
 chair does not, so a chair's error arrives on your desk wearing the same finished
 surface as the rest of the document.
+
+Charge the pass to specifically attack the most convenient or self-serving
+conclusion in the plan, not just to catch typos - it exists precisely to catch the
+chair's own unverified assumption before it becomes a ruling. Report the number of
+defects the pass actually caught before build as a standard metric of the meeting,
+not just a formality to note in passing.
 
 ---
 
@@ -419,7 +444,10 @@ being useful.
 **Sealing.** A mission seals only after the classification-and-consistency gate
 passes, and after General Counsel passes too where money or liability is present.
 Sealing a mission that has not cleared its gates is a protocol violation regardless
-of how confident the owning seat is in the work. On seal:
+of how confident the owning seat is in the work. Run the compliance or legal review
+track in parallel with the build rather than after it, so it gates the moment a
+capability is actually enabled for use rather than gating, and delaying, the build
+itself. On seal:
 
 - Anything only you can unblock is posted to `registers/BLOCKED_ON_OPERATOR.md`
   **the moment it exists**, not held until the mission closes. A blocker discovered

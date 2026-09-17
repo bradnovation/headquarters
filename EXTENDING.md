@@ -148,12 +148,23 @@ note to the next reader and to the session that opens your repo cold, not a
 permission system. Said plainly so you are not surprised later: a session can
 write to a doctrine file if you tell it to, and the file will not stop it.
 
+**As of 0.3, most of the DOCTRINE class ships as invoke-loaded skills** under
+`plugins/headquarters-core` rather than as files a session reads whole. It loads
+from the in-repo `.claude/skills/headquarters-core` symlink this template ships
+with (automatic once you trust the folder), or you can symlink it into your own
+`~/.claude/skills/` for a machine-wide install that follows you across projects -
+`plugins/README.md` walks both routes. The `local-lane` plugin beside it is a
+separate, optional add-on with no bearing on the doctrine above; leave it alone if
+you don't run local models.
+
 ---
 
 ## 6. The upstream pull, honestly
 
-The doctrine layer improves over time and you can take those improvements. The
-mechanics, all of which are your hand rather than a session's:
+The doctrine layer improves over time and you can take those improvements. Read
+`CHANGELOG.md` first for what actually changed, and let `scripts/doctrine-diff.sh`
+prepare step 3's diff for you. The mechanics, all of which are your hand rather than
+a session's:
 
 1. Add the public repository as a second remote in your own copy. Once, ever.
 2. Fetch it. Never merge it blind - your history and its history are not the same

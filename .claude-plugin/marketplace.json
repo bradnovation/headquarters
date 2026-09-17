@@ -1,0 +1,18 @@
+{
+  "name": "headquarters",
+  "owner": {
+    "name": "headquarters maintainers"
+  },
+  "plugins": [
+    {
+      "name": "local-lane",
+      "source": "./plugins/local-lane",
+      "description": "Refuses local-model commands until the memory rails are up; ships the Apple Silicon rails runbook."
+    },
+    {
+      "name": "headquarters-core",
+      "source": "./plugins/headquarters-core",
+      "description": "This template's operating doctrine as invoke-loaded skills, a worker agent, and the subagent fan-out brake."
+    }
+  ]
+}

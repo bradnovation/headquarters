@@ -197,6 +197,19 @@ The onboarding step, in order:
    leaves the rule files mirroring it stale, silently, until you run this step
    again. v1 has no drift detection behind that habit.
 
+## Creative and design passes
+
+Anything a creative or design pass produced clears this guard against a fixed
+checklist of hard rails: forbidden figures, forbidden names, required
+disclaimers, and exact approved wording. A general read-through is not a
+substitute for the checklist. A vibe check catches tone; it misses an exact
+rule violation, which is precisely what a hard rail exists to catch.
+
+Encode each hard rail as a literal, exact-match entry in `rules/style.yaml`'s
+deterministic rows or `rules/banned-terms.yaml`, whichever fits the rule, so
+the fast path enforces it without spending the one judgment call on something
+a pattern match already settles.
+
 ## Standing constraints
 
 - Fails closed rather than open. Stated once already and restated here because

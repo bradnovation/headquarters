@@ -115,19 +115,66 @@ models:
 # above. The unattended tiers are what this file pins. The interactive-only
 # exception, if you have one, is never pinned here, precisely because it must
 # never appear in a duty row below.
+#
+# This whole doctrine is written to run fully with the reasoning tier at the
+# keyboard, and nothing in it assumes more. A more capable interactive-only
+# tier, when you are fortunate enough to have one, is a luxury chosen for
+# particular days - never assumed by any file here, never pinned into a duty
+# row, and never present in a fan-out.
 
 # -----------------------------------------------------------------------------
 # DUTY -> TIER MAP
 # -----------------------------------------------------------------------------
 # The map a charter or a mission packet consults before it convenes more than
 # one agent. THE ESCALATION RULE: building is the default tier for every duty
-# below; reasoning is used only where the duty is judgment-heavy by its
-# nature - chairing, planning, legal-shaped drafting - with the reason stated
-# in the comment beside it, never reached for out of habit and never reached
-# for just because a building-tier attempt felt slow. A duty that starts on
-# building and keeps failing its own verification bar is a finding for the
-# owning seat's charter to address, not a standing excuse to move the duty to
-# reasoning by default.
+# below, and for every fan-out role in general - builders, drafters,
+# researchers, verifiers, skeptics, judges alike. Reasoning is used only where
+# the duty is judgment-heavy by its nature - chairing, planning, legal-shaped
+# drafting - with the reason stated in the comment beside it, never reached
+# for out of habit and never reached for just because a building-tier attempt
+# felt slow. The reasoning tier costs roughly five times as much per token, so
+# a fleet of the same shape costs roughly five times as much the moment its
+# roles are pinned up, and a week's meter can go in two days with no change in
+# the amount of work actually done. A duty that starts on building and keeps
+# failing its own verification bar is a finding for the owning seat's charter
+# to address, not a standing excuse to move the duty to reasoning by default.
+#
+# Every agent call a fan-out script makes has to name, in the call itself, both
+# which model it runs on and how hard that model should work - stated again
+# here because this is the kind of thing that slips by omission, not by
+# choice: leave a call unpinned and it quietly runs on whatever model happens
+# to be sitting at the keyboard, which may be the one interactive-only tier
+# that must never run unattended (see THE ORCHESTRATOR PRINCIPLE below). Effort is set
+# per stage within a single plan, not uniformly across all of it - lower for
+# routine extraction and drafting, higher for synthesis, adversarial review,
+# judging, and final verification, since that is where the real judgment work
+# concentrates.
+#
+# THE BOOST LINE: a cost projection is incomplete until it also discloses
+# whether the plan wants to run anything past building. Most of the time the
+# disclosure is short - nothing is going above the default - and that is fine
+# as a full answer. When something does need the higher tier, name it, give
+# the reason building would fall short there, and put a number on what the
+# jump adds to the bill. The operator has to actually see and answer that
+# question before launch; letting a prior approval or an old habit stand in
+# for a fresh yes does not satisfy it. A repeatable exception gets written
+# into the rulings once, rather than re-argued or silently assumed each time.
+#
+# THE NOTIFY RULE: partway through a run, a duty can start looking like it
+# belongs on the other tier - two failed passes against its own bar at
+# building, or the shape of the work turning out to be counsel, architecture,
+# money, privacy, or a review where a mistake is costly to unwind. That
+# read is a flag for the operator, carrying the reasoning and the price
+# difference, not a decision the session is trusted to make alone in either
+# direction. With no one present to raise it to, an unattended run instead
+# writes the concern down and keeps working at the tier it started on.
+#
+# A sudden spend spike is often driven simply by which tier delegated work
+# happens to be running on, not by any real change in the volume of work.
+# Check for that before assuming more work happened, and treat the expensive
+# tier creeping into becoming the default shape for a whole class of duties as
+# policy drift worth correcting, even when each individual escalation had a
+# stated reason at the time (full treatment: `ops/FLEET_CRAFT.md` section 2).
 #
 # Duty names below match the seats and functions in org/ORG_CHART.md. Adding
 # your own seat means adding its own duty row here, per EXTENDING.md's

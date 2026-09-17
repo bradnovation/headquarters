@@ -1,4 +1,4 @@
-# scripts/ - check-invariants.sh
+# scripts/ - check-invariants.sh, usage-meter-tally.py, doctrine-diff.sh, token-audit/
 <!-- file-class: DOCTRINE -->
 
 *This directory holds mechanical tooling that supports the constitution
@@ -119,3 +119,130 @@ proving the recursive scan; a plain non-git, non-vault call; and malformed
 JSON) and prints one line per case, exiting nonzero if anything fails. It
 writes to a temporary log file for the duration of the run and never
 touches the real `scripts/invariant-guard.log`.
+
+---
+
+# usage-meter-tally.py
+
+## What it checks
+
+`usage-meter-tally.py` is a read-only instrument, not a guard. It walks
+your local Claude Code transcripts (`~/.claude/projects/**/*.jsonl`,
+skipping `journal.jsonl`, which is an index rather than a record of API
+responses) and sums every recorded API response it finds. Each `assistant`
+record it reads carries a model name, a usage block (input, cache-write,
+cache-read, and output tokens), and a timestamp; records are de-duplicated
+by their message id, keeping whichever copy of a given id has the largest
+output token count, since a streamed or resumed session can otherwise
+persist the same response more than once.
+
+Totals are grouped into week windows on a configurable boundary, then
+broken out by model family and by lane - the main keyboard versus
+subagents, decided purely from whether a transcript's own path contains
+`/subagents/`. Every period is priced against a list-price table so two
+weeks, or two lanes, compare on one consistent scale even when the mix of
+models between them changed.
+
+Run it when the meter reading and the amount of actual work done seem to
+disagree with each other. Read the ratios between periods and between
+lanes, not the absolute total: a subscription plan's own metering weighs a
+run its own way, and that weighting belongs to the provider, not to this
+script's price table.
+
+## How to run it
+
+```
+python3 scripts/usage-meter-tally.py
+```
+
+No arguments and no configuration file. The constants block at the top of
+the script (timezone, week boundary weekday and hour, the price table, and
+the long-context threshold) is the whole configuration surface; edit those
+constants directly if your own setup differs from the defaults.
+
+## What it never does
+
+- It never writes to any transcript, ledger, or any other file. It only
+  prints a table to standard output.
+- It never makes a network call, and never contacts a provider's billing
+  or usage API. Every figure it reports is computed from records already
+  sitting on disk.
+- It never reads or reports anything about the content of a conversation.
+  It reads only the model name, the usage counters, the timestamp, and the
+  file's own path (to decide the lane); message text is never opened.
+- It never asserts that its own price table matches what you were actually
+  billed. The table is a set of constants you maintain, priced at list, so
+  that periods compare on one scale; it is not a bill.
+
+---
+
+# doctrine-diff.sh
+
+## What it checks
+
+`doctrine-diff.sh` prepares and explains an upstream doctrine diff so you
+do not have to assemble one by hand every time you want to review a new
+release. It runs entirely inside your own copy of this repository, against
+your own repository only: it fetches the upstream remote you name (or
+`upstream` by default), then prints `git diff --stat` and the full `git
+diff` between your current commit and the ref you name (or
+`upstream/main` by default), restricted to the doctrine-class paths listed
+in `EXTENDING.md` section 5. Those paths are copied into an array near the
+top of the script, with a comment pointing back at that section, so the
+list this script checks and the list that section documents can be
+compared directly.
+
+## How to run it
+
+```
+scripts/doctrine-diff.sh [remote] [ref]
+```
+
+Both arguments are optional. Add the upstream repository as a remote once,
+in your own copy, before the first run; the script tells you plainly if
+the named remote does not exist yet rather than guessing at one.
+
+## What it never does
+
+- It applies nothing. No merge, rebase, cherry-pick, or file write happens
+  at any point; the script only fetches and prints.
+- It never runs a git command against any repository other than the one it
+  lives in. There is no path in this script naming a foreign repository,
+  and none of its git commands accept one.
+- It never widens its own path list beyond what `EXTENDING.md` section 5
+  states. If that section's table changes, the array in this script needs
+  a matching edit; the script does not read that file at run time to stay
+  in sync automatically.
+- It never decides what to apply. The diff it prints is for your own
+  review; applying any of it, in your own commit, stays your act, exactly
+  as `EXTENDING.md` section 6 describes.
+
+---
+
+# token-audit/
+
+## What it does
+
+`token-audit/` is a directory of four read-only scripts -
+`token_audit.py`, `permodel.py`, `rewarm.py`, `read_audit.py` - plus a
+shared `prices.py` module, that measure token burn from your own local
+Claude Code transcripts (`~/.claude/projects/<project-dir>/**/*.jsonl`).
+Each takes `--since`/`--until` (default: the last 21 days) and an optional
+`--projects` substring filter, so the same four scripts serve both a
+one-off look and a repeatable before/after comparison across any window.
+`token-audit/README.md` says what each script measures, how to take a
+baseline and compare a later run against it, and what the numbers - context
+p50/p90, cache write vs cache read, re-warm events - mean.
+
+## What it never does
+
+- It never writes to any transcript or any other file, and never makes a
+  network call. Every number comes from `.jsonl` files already on disk.
+- It never reads message text as content. The one partial exception
+  (`read_audit.py` taking a text field's length, and checking one fixed
+  literal as a substring match) is documented in `token-audit/README.md`;
+  the text itself is never printed, stored, or returned.
+- It never bills anything. `permodel.py`'s dollar figures are computed
+  against the list-rate table in `prices.py` (or your own override file),
+  for comparing two runs on one scale - never a claim about what a provider
+  actually charged.

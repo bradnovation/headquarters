@@ -1,0 +1,1 @@
+{ "name": "local-lane", "displayName": "Local lane", "version": "0.1.0", "description": "Refuses local-model commands until the memory rails are up; ships the Apple Silicon rails runbook." }

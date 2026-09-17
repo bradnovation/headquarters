@@ -24,6 +24,12 @@ session, reading files in a fixed order, reaches the same picture of reality tha
 last session had.** This file states that order, explains why it runs in that
 sequence, and shows the procedure applied end to end.
 
+An index entry that summarizes or points to a fuller file can go stale independently
+of the file it points to. Because the index gets read first and fastest, a stale
+index entry silently overrides current doctrine sitting underneath it. Update both
+the index line and the file it points to in the same edit, and open the underlying
+file before letting a recalled index entry drive a real decision.
+
 Three things make it work together, and they are one mechanism, not three:
 
 - the read order in `CLAUDE.md`, which every session runs at open;
@@ -87,6 +93,14 @@ narrative outranks nothing; history breaks ties.** Anything you add to this repo
 should be filed into that hierarchy deliberately, not left for a future session to
 guess at.
 
+Two additions worth stating plainly, both about a session's own memory rather than
+about the files. A peer session's own handoff file outranks any other session's
+account of that peer; if a peer told you where it stood, and its own file since says
+something else, its file wins. And after a compaction or any loss of context, a
+session re-reads its own live state files before acting on what it remembers -
+compacted memory of what it was doing is a summary, not the record, and a summary can
+drop exactly the caveat that mattered.
+
 ---
 
 ## 3. The reconstruction procedure
@@ -130,7 +144,10 @@ that everything else in this system depends on.
    order, with their messages. This settles which of two conflicting accounts is
    current.
 10. **Classify the stop point** (section 4), then propose a route and halt. Do not act
-    on the proposal without the operator's word.
+    on the proposal without the operator's word. Keep the proposal itself short and
+    structured - a compact table, one clear ask, well under a page - unless the
+    operator has explicitly asked for more depth; a long, technically thorough update
+    is often functionally illegible next to a short, structured one.
 
 If the repo is large, steps 3-7 are still cheap: registers and ledgers are short by
 design, and any register that has grown too long to read in full has stopped doing its

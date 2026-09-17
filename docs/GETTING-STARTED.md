@@ -28,11 +28,18 @@ not waiting on anything.
 
 ## 2. Clone it, and open a session inside it
 
-There is no signup, no separate account, and no setup step outside the ordinary one:
-clone the repository to a directory on your own machine, and open your session inside
-that directory. Everything downstream, the interview, the meetings, the missions,
-runs from files sitting in that same tree. Nothing about this product lives anywhere
-else, and nothing calls out to a service you have not already set up for yourself.
+There is no signup and no separate account. Install Claude Code first, if you have
+not already: the native installer (`curl -fsSL https://claude.ai/install.sh | bash`
+on macOS, Linux, or WSL; `irm https://claude.ai/install.ps1 | iex` in Windows
+PowerShell), or a package manager (`brew install --cask claude-code`, or
+`winget install Anthropic.ClaudeCode`), then confirm it with `claude --version`. Get
+your own copy of this repository, most simply with GitHub's **Use this template**
+button on the repository page followed by an ordinary `git clone` of the copy it
+creates for you; `README.md`'s install section covers the other two paths. Then `cd`
+into that directory and run `claude`. Everything downstream, the interview, the
+meetings, the missions, runs from files sitting in that same tree. Nothing about
+this product lives anywhere else, and nothing calls out to a service you have not
+already set up for yourself.
 
 The moment a session opens inside a fresh clone, the read order at the top of
 `CLAUDE.md` runs: this file first, then `doctrine/CONSTITUTION-CORE.md`, then
@@ -41,6 +48,14 @@ that last pair is a placeholder and an empty ledger, which is itself informative
 tells the session, correctly, that nothing has happened here yet. Because the
 generated layer of `CLAUDE.md` still carries bracketed placeholders, the session's own
 router points at exactly one thing worth doing first: the onboarding interview.
+
+As of 0.3, the doctrine those rituals run on is invoke-loaded from
+`plugins/headquarters-core` rather than kept only in `doctrine/CONSTITUTION-CORE.md`.
+It loads automatically from the in-repo `.claude/skills/headquarters-core` symlink
+this template ships with, once you trust the folder, or you can symlink it into your
+own `~/.claude/skills/` instead so it follows you machine-wide - see
+`plugins/README.md` for both routes. The `local-lane` plugin next to it is a separate,
+optional add-on: skip it entirely if you don't run local models.
 
 ---
 
@@ -108,6 +123,16 @@ number of places: the generated section of `CLAUDE.md`, your founding statement 
 first handoff entry, written as the position this sitting is leaving behind rather
 than a description of the interview itself, becomes the bottom of the stack in
 `HANDOFF.md` for good.
+
+**Running it again, later.** The interview is not only for a bare clone. Re-run it
+against a repository that has been live for months, with real projects, rulings, and
+seat charters already filled in, and it drafts a diff against what is already there
+instead of drafting from scratch, so a stale answer is a visible change rather than a
+silent overwrite. It also covers the harder shape of the same case: the underlying
+template itself has moved on since your copy was created. When that happens, run the
+upstream pull in `EXTENDING.md` section 6 first, reviewing only the doctrine-path
+diff, then re-run the interview so your generated layer catches up to what the
+doctrine now expects from it.
 
 ---
 
@@ -220,7 +245,7 @@ reconciled or explicitly noted as needing nothing this time.
 
 ## 7. Where to go from here
 
-Four places are worth knowing about once the first sitting is behind you.
+Five places are worth knowing about once the first sitting is behind you.
 
 **`EXTENDING.md`**, for the day your work names a role the default roster does not:
 a delivery seat, an engineering seat watching your own coding agents, a research
@@ -247,6 +272,13 @@ a session owes the next one and how a cold session rebuilds the picture, then
 questions expensive enough to bank rather than guess at. The function charters
 under `org/functions/` are worth their own read the first time your work actually
 touches one.
+
+**`docs/TOKEN-ECONOMY.md`**, for the day the meter itself becomes the question: a
+one-page account of where a multi-session staff's spend concentrates and the
+levers that move it, ranked by effect rather than by how easy each one is to
+flip. `examples/settings/` holds the worked settings block it points at, and
+`scripts/token-audit/` is how you re-derive your own numbers instead of taking
+anyone else's.
 
 ---
 
