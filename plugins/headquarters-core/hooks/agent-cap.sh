@@ -1,21 +1,27 @@
 #!/bin/bash
-# agent-cap.sh — Claude Code PreToolUse hook (matcher: Agent).
-# Asks the operator, with the agent's stated purpose, once a session fans out past the cap
-# inside a rolling window. Cap 5 (his ruling 2026-09-16: five by default, more on request with
-# a reason), lowered to 3 while a local model is GPU-resident (factory doctrine M-010).
+# agent-cap.sh — Claude Code hook, two events (see hooks.json):
+#   UserPromptSubmit : reset this session's counter (the cap is PER INSTRUCTION, not per session).
+#   PreToolUse/Agent : count the spawn; at the (cap+1)th spawn of one instruction ASK ONCE, with the
+#                      agent's stated purpose; later spawns of the same instruction pass silently.
+# Cap 5 (five by default, more on the operator's word with a reason), lowered to 3 while a
+# local model is GPU-resident (local-model doctrine). The hard concurrency ceiling is
+# CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS in settings.json; this hook is the checkpoint, not the ceiling.
 # Workflow-tool fleets do not pass through this hook; their brake is the projection ritual.
-CAP="${AGENT_CAP:-5}"; CAP_RESIDENT="${AGENT_CAP_MODEL_RESIDENT:-3}"; WIN="${AGENT_CAP_WINDOW_SEC:-900}"
+# Shape after Aaron McGowan's finding (claude-ops PR #1, 2026-09): a per-session cumulative counter
+# turns into a toll gate on every spawn past the cap; scope it to the instruction and ask once.
+CAP="${AGENT_CAP:-5}"; CAP_RESIDENT="${AGENT_CAP_MODEL_RESIDENT:-3}"
 command -v jq >/dev/null || exit 0
 INPUT=$(cat)
 SID=$(printf '%s' "$INPUT" | jq -r '.session_id // "unknown"')
+EVENT=$(printf '%s' "$INPUT" | jq -r '.hook_event_name // ""')
+F="${TMPDIR:-/tmp}/claude-agent-spawns-$SID"
+if [ "$EVENT" = "UserPromptSubmit" ]; then : > "$F"; exit 0; fi
 DESC=$(printf '%s' "$INPUT" | jq -r '.tool_input.description // ""')
 note=""
 if ollama ps 2>/dev/null | awk 'NR>1 && NF>0{f=1} END{exit !f}'; then CAP="$CAP_RESIDENT"; note=", lowered while a local model is resident"; fi
-F="${TMPDIR:-/tmp}/claude-agent-spawns-$SID"; now=$(date +%s); touch "$F"
-awk -v c=$((now-WIN)) '$1>=c' "$F" > "$F.tmp" 2>/dev/null && mv "$F.tmp" "$F"
-echo "$now" >> "$F"; N=$(wc -l < "$F" | tr -d ' ')
-if [ "$N" -gt "$CAP" ]; then
-  jq -n --arg r "Subagent $N in the last $((WIN/60)) min (cap $CAP$note). Purpose: ${DESC:-unstated}. Approve this fan-out?" \
+touch "$F"; echo "$(date +%s)" >> "$F"; N=$(wc -l < "$F" | tr -d ' ')
+if [ "$N" -eq $((CAP+1)) ]; then
+  jq -n --arg r "This instruction is fanning out past $CAP subagents$note (this is number $N). Purpose: ${DESC:-unstated}. Approve the fan-out? (asked once per instruction; the hard concurrency ceiling stays at CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS)" \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"ask",permissionDecisionReason:$r}}'
 fi
 exit 0

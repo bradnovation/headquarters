@@ -1,5 +1,8 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agent-cap.sh" } ] }
+    ],
     "PreToolUse": [
       { "matcher": "Agent", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/agent-cap.sh" } ] }
     ]
